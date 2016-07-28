@@ -6,4 +6,5 @@ node_modules/
 public/
 .deploy*/
 debug.log
+.deploy_git/
 /.deploy_git/
