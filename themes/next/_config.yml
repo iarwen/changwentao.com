@@ -138,15 +138,15 @@ custom_logo:
 # Available value:
 #    normal | night | night eighties | night blue | night bright
 # https://github.com/chriskempson/tomorrow-theme
-highlight_theme: normal
+highlight_theme: night
 
 # Automatically scroll page to section which is under <!-- more --> mark.
 scroll_to_more: true
 
 # Automatically Excerpt
 auto_excerpt:
-  enable: false
-  length: 150
+  enable: true
+  length: 300
 
 # Use Lato font
 use_font_lato: true
