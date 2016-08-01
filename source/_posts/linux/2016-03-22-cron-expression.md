@@ -1,7 +1,7 @@
 title: cron表达式
 date: 2016/03/22 18:54:25
 categories:
-- cron
+- Linux
 tags: [cron]
 ---
 # CronTrigger配置格式

@@ -1,7 +1,7 @@
 title: VBS发送邮件
 date: 2016/03/22 18:38:25
 categories:
-- vbs
+- windows
 tags: [vbs,email]
 ---
 没啥说的，直接代码 注意Textbody的编码

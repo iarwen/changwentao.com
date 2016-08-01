@@ -1,7 +1,7 @@
 title: ubuntu将字符集设置为英文
 date: 2016/06/13 10:00:25
 categories:
-- ubuntu charset
+- Ubuntu Linux
 tags: [ubuntu,charset]
 ---
 
