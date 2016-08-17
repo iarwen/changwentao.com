@@ -6,6 +6,21 @@ tags: [docker,run]
 ---
 
 docker运行镜像靠run，run命令会自动从指定的镜像运行，如果镜像不存在，会先自动pull到本地，docker的文件系统称为layer，有发生变化的layer会新生成一个layer，有一个image id。
+目前我使用docker，一般是用镜像启动成一个容器，然后以后就直接stop/start这个容器
+常用的组合
+端口：-p 3306:3306
+起名：--name mysql
+磁盘映射：-v /data/mysql:/var/lib/mysql
+例如
+```
+docker run --name mysql -p 3306:3306 -v /data/mysql:/var/lib/mysql mysql:5.6-jessie
+```
+有时候Docker上的系统会对时间敏感，有可能由于时区的原因导致时间不正确，这个时候
+就要使用环境变量设置时区，保证运行环境的正确
+```
+docker run --rm -it -e TZ=Asia/Shanghai sonatype/nexus date
+```
+贴一下docker run的二级命令，很多个子命令
 ```
 root@ubuntu:~# docker run --help
 `Usage:  docker run [OPTIONS] IMAGE [COMMAND] [ARG...]`
@@ -85,15 +100,6 @@ Run a command in a new container
   --volume-driver                 Optional volume driver for the container
   --volumes-from=[]               Mount volumes from the specified container(s)
   -w, --workdir                   Working directory inside the container
-```
-目前我使用docker，一般是用镜像启动成一个容器，然后以后就直接stop/start这个容器
-常用的组合
-端口：-p 3306:3306
-起名：--name mysql
-磁盘映射：-v /data/mysql:/var/lib/mysql
-例如
-```
-docker run --name mysql -p 3306:3306 -v /data/mysql:/var/lib/mysql mysql:5.6-jessie
 ```
 
 
