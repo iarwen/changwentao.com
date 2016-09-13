@@ -5,6 +5,7 @@ categories:
 tags: [lambda]
 ---
 之前对于Java的版本概念不是很强烈，从Java5中学习到的那些语法足以满足日常开发中的需要，最近迷恋上了`IDEA`，对于其提示出来的语法建议深感自身知识的落伍。
+
 在这篇文章中，将汇集再发现到新语法或者特性时将会补充。
 
 ## 语法
@@ -15,6 +16,7 @@ lambda最先出现在其他语言中，从Java8才进入此语法，此语法确
 以下已一些常用类加以说明[BEFORE：之前的语法   AFTER：使用lambda的语法]。
 
 List:
+
 ```
 List<String> list = new ArrayList<>();
 list.add("1");
@@ -56,7 +58,7 @@ list.sort(String::compareTo);
 Map：
 ```
 Map<String,String> map = new HashMap<>();
-map.put("k1","v1");
+map.put("k1","v1");``
 map.put("k2","v2");
 map.put("k3","v3");
 
