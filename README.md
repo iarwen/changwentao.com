@@ -29,3 +29,11 @@ npm install hexo-generator-sitemap@1 --save
 ## tools
 1.markdown eclipse plugin update site:
 http://www.winterwell.com/software/updatesite/
+
+
+
+## install version 2
+>   excute 'hexo init' on an empty folder
+>   github clone rep. changwentao.github.io
+>   excute 'npm install hexo --save' on rep.
+>   copy 'package.json' and 'node_modules' into rep.>
