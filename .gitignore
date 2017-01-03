@@ -8,3 +8,5 @@ public/
 debug.log
 /.deploy_git/
 package.json
+.idea
+*.iml
