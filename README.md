@@ -3,7 +3,7 @@ changwentao.com
 
 My Website Repository
 
-## important step
+# important step
 0.install node.js and git
  
 1.$npm install -g hexo-cli
@@ -26,14 +26,14 @@ My Website Repository
 
 4.Use eclipse generate the ssh-rsa type key,copy the public key to github.com and save the private&public key to ~/.ssh/
 
-## tools
+# tools
 1.markdown eclipse plugin update site:
 http://www.winterwell.com/software/updatesite/
 
 
 
-## install Version-2
->*   excute 'hexo init' on an empty folder
->*   github clone rep. changwentao.github.io
->*   excute 'npm install hexo --save' on rep.
->*   copy 'package.json' and 'node_modules' into rep.
+# install Version-2
+* excute 'hexo init' on an empty folder
+* github clone rep. changwentao.github.io
+* excute 'npm install hexo --save' on rep.
+* copy 'package.json' and 'node_modules' into rep.
