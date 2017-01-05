@@ -8,19 +8,19 @@ My Website Repository
  
 1.$npm install -g hexo-cli
 
-2.$
-npm install hexo-generator-index --save
-npm install hexo-generator-archive --save
-npm install hexo-generator-category --save
-npm install hexo-generator-tag --save
-npm install hexo-server --save
-npm install hexo-deployer-git --save
-npm install hexo-deployer-heroku --save
-npm install hexo-deployer-rsync --save
-npm install hexo-deployer-openshift --save
-npm install hexo-renderer-marked@0.2 --save
-npm install hexo-renderer-stylus@0.2 --save
-npm install hexo-generator-sitemap@1 --save
+2.$<br>
+npm install hexo-generator-index --save<br>
+npm install hexo-generator-archive --save<br>
+npm install hexo-generator-category --save<br>
+npm install hexo-generator-tag --save<br>
+npm install hexo-server --save<br>
+npm install hexo-deployer-git --save<br>
+npm install hexo-deployer-heroku --save<br>
+npm install hexo-deployer-rsync --save<br>
+npm install hexo-deployer-openshift --save<br>
+npm install hexo-renderer-marked@0.2 --save<br>
+npm install hexo-renderer-stylus@0.2 --save<br>
+npm install hexo-generator-sitemap@1 --save<br>
 
 3.change deploy type from github to git(/.config.yml)
 
