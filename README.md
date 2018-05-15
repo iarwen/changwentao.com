@@ -3,10 +3,7 @@
 所有的npm包都上传，每次只要执行
 ```
 npm install -g hexo
-npm install hexo-deployer-git --save --registry=https://registry.npm.taobao.org
-npm install hexo-deployer-heroku --save --registry=https://registry.npm.taobao.org
-npm install hexo-deployer-rsync --save --registry=https://registry.npm.taobao.org
-npm install hexo-deployer-openshift --save --registry=https://registry.npm.taobao.org
+npm install hexo-deployer-git --save
 ```
 
 changwentao.com
