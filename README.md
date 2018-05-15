@@ -1,9 +1,10 @@
----new
+# new
 每次重新搭建环境都搞得各种npm包不成功 索性将
 所有的npm包都上传，每次只要执行
 ```
 npm install -g hexo 就好了
 ```
+
 changwentao.com
 =================
 
