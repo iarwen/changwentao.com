@@ -7,3 +7,4 @@ debug.log
 /.deploy_git/
 .idea
 *.iml
+db.json
