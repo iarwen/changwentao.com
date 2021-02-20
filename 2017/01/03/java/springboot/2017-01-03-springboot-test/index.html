@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"changwentao.com","root":"/","images":"/images","scheme":"Gemini","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="项目正式使用SpringBoot,之前也只是自己边玩边学习，封装了一些单元测试的底层类以及一些常用的技巧 引入依赖12345678910&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;    &lt;artifactId&gt;spring-boot-starter-test&lt;&#x2F;arti">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot的单元测试">
+<meta property="og:url" content="http://changwentao.com/2017/01/03/java/springboot/2017-01-03-springboot-test/index.html">
+<meta property="og:site_name" content="i.Arwen">
+<meta property="og:description" content="项目正式使用SpringBoot,之前也只是自己边玩边学习，封装了一些单元测试的底层类以及一些常用的技巧 引入依赖12345678910&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;    &lt;artifactId&gt;spring-boot-starter-test&lt;&#x2F;arti">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-01-03T07:05:25.000Z">
+<meta property="article:modified_time" content="2021-02-20T02:39:26.093Z">
+<meta property="article:author" content="Arwen">
+<meta property="article:tag" content="SpringBoot">
+<meta property="article:tag" content="单元测试">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://changwentao.com/2017/01/03/java/springboot/2017-01-03-springboot-test/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>SpringBoot的单元测试 | i.Arwen</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">i.Arwen</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">读万卷书 行万里路</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="nav-number">1.</span> <span class="nav-text">引入依赖</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Service%E5%B1%82%E6%B5%8B%E8%AF%95%E7%9A%84%E5%9F%BA%E7%B1%BB"><span class="nav-number">2.</span> <span class="nav-text">Service层测试的基类</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Controller%E5%B1%82%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E5%9F%BA%E7%B1%BB"><span class="nav-number">3.</span> <span class="nav-text">Controller层单元测试基类</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Arwen"
+      src="/images/default_avatar.jpg">
+  <p class="site-author-name" itemprop="name">Arwen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/iarwen" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;iarwen" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/websays" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;websays" rel="noopener" target="_blank"><i class="fab fa-weibo fa-fw"></i>Weibo</a>
+      </span>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/iarwen" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://changwentao.com/2017/01/03/java/springboot/2017-01-03-springboot-test/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/default_avatar.jpg">
+      <meta itemprop="name" content="Arwen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="i.Arwen">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SpringBoot的单元测试
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-01-03 15:05:25" itemprop="dateCreated datePublished" datetime="2017-01-03T15:05:25+08:00">2017-01-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/SpringBoot/" itemprop="url" rel="index"><span itemprop="name">SpringBoot</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>项目正式使用SpringBoot,之前也只是自己边玩边学习，封装了一些单元测试的底层类以及一些常用的技巧</p>
+<h1 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>junit<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h1 id="Service层测试的基类"><a href="#Service层测试的基类" class="headerlink" title="Service层测试的基类"></a>Service层测试的基类</h1><a id="more"></a>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith(SpringJUnit4ClassRunner.class)</span></span><br><span class="line"><span class="meta">@SpringBootTest(classes = Application.class)</span></span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="meta">@Rollback</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BasicServiceTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> Logger logger = Logger.getLogger(<span class="keyword">this</span>.getClass());</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BasicServiceTest</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注解介绍：<br>@RunWith：单元测试的执行类，主要提供Spring运行时的环境<br>@SpringBootTest:执行SpringBoot的入口类<br>@Transactional：配置事务，在单元测试用控制事务<br>@Rollback：回滚方式执行单元测试</p>
+<h1 id="Controller层单元测试基类"><a href="#Controller层单元测试基类" class="headerlink" title="Controller层单元测试基类"></a>Controller层单元测试基类</h1><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(SpringRunner.class)</span><br><span class="line"><span class="meta">@SpringBootTest</span>(webEnvironment = WebEnvironment.RANDOM_PORT, classes = Application.class)</span><br><span class="line"><span class="meta">@Transactional</span></span><br><span class="line"><span class="meta">@Rollback</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BasicWebTest</span>   </span>&#123;</span><br><span class="line">	<span class="keyword">protected</span> MockMvc mvc;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">protected</span> List&lt;<span class="built_in">Object</span>&gt; controllers = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Autowired</span></span><br><span class="line">	<span class="keyword">protected</span> TestRestTemplate restTemplate;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">void</span> <span class="function"><span class="title">setUp</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		controllers.add(<span class="keyword">new</span> Context());</span><br><span class="line">		setMvc(MockMvcBuilders.standaloneSetup(controllers).build());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> MockMvc <span class="function"><span class="title">getMvc</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> mvc;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">void</span> <span class="function"><span class="title">setMvc</span>(<span class="params">MockMvc mvc</span>)</span> &#123;</span><br><span class="line">		<span class="built_in">this</span>.mvc = mvc;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> TestRestTemplate <span class="function"><span class="title">getRestTemplate</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> restTemplate;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="built_in">void</span> <span class="function"><span class="title">setRestTemplate</span>(<span class="params">TestRestTemplate restTemplate</span>)</span> &#123;</span><br><span class="line">		<span class="built_in">this</span>.restTemplate = restTemplate;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>子类继承BasicWebTest并在@Before的方法中给controllers添加需要测试的controller,然后调用super.setUp()方法<br>例：</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">public <span class="keyword">class</span> ExampleWebTest extends BasicWebTest &#123;</span><br><span class="line"></span><br><span class="line">	@Before</span><br><span class="line">	public void set<span class="constructor">Up()</span> &#123;</span><br><span class="line">		<span class="comment">// 添加需要测试的Controller</span></span><br><span class="line">		controllers.add(<span class="keyword">new</span> <span class="constructor">MainController()</span>);</span><br><span class="line">		super.set<span class="constructor">Up()</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	@Test</span><br><span class="line">	public void example<span class="constructor">Test()</span> throws Exception &#123;</span><br><span class="line">		<span class="comment">// 1.get请求URL参数</span></span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		 * @RequestMapping(&quot;/api/v1/context/&#123;id&#125;&quot;)</span></span><br><span class="line"><span class="comment">		 *</span></span><br><span class="line"><span class="comment">		 * @ResponseBody Map&lt;String, Object&gt; context(@RequestParam String</span></span><br><span class="line"><span class="comment">		 * param,@PathVariable String id) &#123; Map&lt;String, Object&gt; map = new</span></span><br><span class="line"><span class="comment">		 * HashMap&lt;&gt;(); map.put(&quot;context&quot;, &quot;/api/v1/context&quot;); map.put(&quot;param&quot;,</span></span><br><span class="line"><span class="comment">		 * param); return map; &#125;</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">		String uri = <span class="string">&quot;/api/v1/context/&#123;id&#125;?param=1234&quot;</span>;</span><br><span class="line"></span><br><span class="line">		Map&lt;String, String&gt; param = <span class="keyword">new</span> HashMap&lt;String, String&gt;<span class="literal">()</span>;</span><br><span class="line">		param.put(<span class="string">&quot;id&quot;</span>, <span class="string">&quot;123&quot;</span>);</span><br><span class="line"></span><br><span class="line">		ResponseEntity&lt;String&gt; exchange = restTemplate.get<span class="constructor">ForEntity(<span class="params">uri</span>, String.<span class="params">class</span>, <span class="params">param</span>)</span>;</span><br><span class="line">		<span class="module-access"><span class="module"><span class="identifier">Assert</span>.</span></span><span class="keyword">assert</span><span class="constructor">Equals(<span class="params">exchange</span>.<span class="params">getStatusCode</span>()</span>, HttpStatus.NOT_FOUND);</span><br><span class="line">		<span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(exchange.get<span class="constructor">Body()</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 2.post提交对象</span></span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		 * @RequestMapping(&quot;/api/v1/context1&quot;)</span></span><br><span class="line"><span class="comment">		 *</span></span><br><span class="line"><span class="comment">		 * @ResponseBody Map&lt;String, Object&gt; context1(@RequestBody User user) &#123;</span></span><br><span class="line"><span class="comment">		 * Map&lt;String, Object&gt; map = new HashMap&lt;&gt;(); map.put(&quot;context&quot;,</span></span><br><span class="line"><span class="comment">		 * &quot;/api/v1/context&quot;); return map; &#125;</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">		String uri_post = <span class="string">&quot;/api/v1/context1&quot;</span>;</span><br><span class="line">		HttpHeaders headers = <span class="keyword">new</span> <span class="constructor">HttpHeaders()</span>;</span><br><span class="line">		MediaType <span class="keyword">type</span> = <span class="module-access"><span class="module"><span class="identifier">MediaType</span>.</span></span>parse<span class="constructor">MediaType(<span class="string">&quot;application/json; charset=UTF-8&quot;</span>)</span>;</span><br><span class="line">		headers.set<span class="constructor">ContentType(<span class="params">type</span>)</span>;</span><br><span class="line">		headers.add(<span class="string">&quot;Accept&quot;</span>, <span class="module-access"><span class="module"><span class="identifier">MediaType</span>.</span><span class="module"><span class="identifier">APPLICATION_JSON</span>.</span></span><span class="keyword">to</span><span class="constructor">String()</span>);</span><br><span class="line"></span><br><span class="line">		Map&lt;String, String&gt; params = <span class="keyword">new</span> HashMap&lt;&gt;<span class="literal">()</span>;</span><br><span class="line">		params.put(<span class="string">&quot;id&quot;</span>, <span class="string">&quot;1&quot;</span>);</span><br><span class="line">		params.put(<span class="string">&quot;name&quot;</span>, <span class="string">&quot;username&quot;</span>);</span><br><span class="line"></span><br><span class="line">		JSONObject jsonObj = <span class="keyword">new</span> <span class="constructor">JSONObject(<span class="params">params</span>)</span>;</span><br><span class="line"></span><br><span class="line">		HttpEntity&lt;String&gt; formEntity = <span class="keyword">new</span> HttpEntity&lt;String&gt;(jsonObj.<span class="keyword">to</span><span class="constructor">String()</span>, headers);</span><br><span class="line"></span><br><span class="line">		String result = restTemplate.post<span class="constructor">ForObject(<span class="params">uri_post</span>, <span class="params">formEntity</span>, String.<span class="params">class</span>)</span>;</span><br><span class="line">		<span class="module-access"><span class="module"><span class="identifier">System</span>.</span></span>out.println(result);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SpringBoot/" rel="tag"># SpringBoot</a>
+              <a href="/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/" rel="tag"># 单元测试</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2016/08/08/java/2016-08-08-java-8-feature/" rel="prev" title="Java8的新特性">
+                  <i class="fa fa-chevron-left"></i> Java8的新特性
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/01/24/life/2017-01-24-5years/" rel="next" title="这五年的那些事">
+                  这五年的那些事 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Arwen</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+</body>
+</html>
