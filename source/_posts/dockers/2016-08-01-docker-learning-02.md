@@ -15,6 +15,7 @@ docker运行镜像靠run，run命令会自动从指定的镜像运行，如果�
 ```
 docker run --name mysql -p 3306:3306 -v /data/mysql:/var/lib/mysql mysql:5.6-jessie
 ```
+<!--more-->
 有时候Docker上的系统会对时间敏感，有可能由于时区的原因导致时间不正确，这个时候
 就要使用环境变量设置时区，保证运行环境的正确
 ```

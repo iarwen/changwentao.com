@@ -11,7 +11,7 @@ tags: [docker]
 从[官方hub](http://hub.docker.com)下载镜像在我的网络里十分慢，所以我一般使用Dockerfile构建镜像。作为补充，也可以从阿里的hub搜索
 [阿里hub](https://dev.aliyun.com/search.html)
 目前官网能搜到的镜像一般都提供github的Dockerfile连接
-
+<!--more-->
 ## 安装
 docker 的安装比较简单，尤其是ubuntu下，官网也提供了方法，具体如下
 ```

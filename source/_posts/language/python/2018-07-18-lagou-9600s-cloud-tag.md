@@ -1,4 +1,4 @@
-title: 从9600+家公司的简介以及产品说明，能看出来什么
+title: 分析9600+家公司的简介以及产品说明，生成标签云
 date: 2018/07/18 16:49:25
 categories:
 - 爬虫 结巴分词 标签云 Node.js Python
@@ -6,9 +6,9 @@ tags: [python,标签云]
 ---
 
 最近工作有空闲，树莓派上跑了个Node服务器，爬了几天拉勾上的公司，爬取的网址类似下面的格式：
-
-https://www.lagou.com/gongsi/200562.html
-
+https://www.lagou.com/gongsi/200562.html ，先上分析结果：
+![](https://static.oschina.net/uploads/space/2017/1026/161508_7vNm_584443.png)
+<!--more-->
 源码如下
 ```
 var fetch_url = '/gongsi/${index}.html';
@@ -236,8 +236,6 @@ size=(1200, 1000),layout=LAYOUT_HORIZONTAL,
 fontname="SimHei")
 ```
 输出结果keyword_tag_cloud4.png
-
-![](https://static.oschina.net/uploads/space/2017/1026/161508_7vNm_584443.png)
 
 ref:
 

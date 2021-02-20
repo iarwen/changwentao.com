@@ -10,7 +10,7 @@ golang 的 select 就是监听 IO 操作，当 IO 操作发生时，触发相应
 在执行select语句的时候，运行时系统会`自上而下地判断每个case中的发送或接收操作是否可以被立即执行`(立即执行：意思是当前Goroutine不会因此操作而被阻塞)
 
 select的用法与switch非常类似，由select开始一个新的选择块，每个选择条件由case语句来描述。与switch语句可以选择任何可使用相等比较的条件相比，select有比较多的限制，其中最大的一条限制就是每个case语句里必须是一个IO操作，确切的说，应该是一个面向channel的IO操作。
-
+<!--more-->
 下面这段话来自官方文档：
 
 "select" statement chooses which of a set of possible send or receive operations will proceed. It looks similar to a "switch" statement but with the cases all referring to communication operations.

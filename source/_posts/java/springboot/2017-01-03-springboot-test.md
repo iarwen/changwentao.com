@@ -19,6 +19,7 @@ tags: [SpringBoot,单元测试]
 </dependency>
 ```
 # Service层测试的基类
+<!--more-->
 ```
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)

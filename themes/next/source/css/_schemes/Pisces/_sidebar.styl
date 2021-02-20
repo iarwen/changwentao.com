@@ -1,100 +1,95 @@
-.use-motion .sidebar .motion-element { opacity: 1; }
-
 .sidebar {
-  display: none;
-  right: auto;
-  bottom: auto;
-  -webkit-transform: none
+  margin-top: $sidebar-offset;
+  // https://caniuse.com/css-sticky
+  position: -webkit-sticky;
+  position: sticky;
+  top: $sidebar-offset;
+  width: $sidebar-desktop;
+
+  +tablet-mobile() {
+    display: none;
+  }
+
+  if (hexo-config('motion.enable') and hexo-config('motion.transition.sidebar')) {
+    visibility: hidden;
+  }
 }
 
+.sidebar-toggle {
+  display: none;
+}
 
 .sidebar-inner {
+  background: var(--content-bg-color);
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
   box-sizing: border-box;
-  width: 230px;
-  color: $text-color;
-  background: white;
-  &.affix { top: 0px; position: fixed; }
+  color: var(--text-color);
 }
 
-.site-overview {
-  margin: 0 10px;
-  text-align: left;
+.site-state-item {
+  padding: 0 10px;
 }
 
-.site-author {
-  clearfix();
-}
-
-.site-author-image {
-  float: left;
-  margin-right: 10px;
-  max-width: 64px;
-  border-width: 1px;
-  border-color: $gainsboro;
-}
-.site-author-name {
-  margin: 0;
-  font-weight: $font-weight-bold;
-}
-
-.site-description {
-  margin-top: 0;
-  line-height: 1.6;
-}
-
-.sidebar a {
-  color: $black-light;
-  &:hover { color: $black-deep; }
-}
-
-.links-of-author-item {
-  a:before { display: none; }
-  a {
-    border-bottom: none;
-    text-decoration: underline;
-  }
-}
-
-
-.feed-link {
-  border-top: 1px dotted $grey-light;
+.sidebar .sidebar-button {
   border-bottom: 1px dotted $grey-light;
-  text-align: center;
-}
+  border-top: 1px dotted $grey-light;
 
-$orange = #fc6423;
-.feed-link a {
-  display: block;
-  color: $orange;
-  border: none;
-
-  &:hover {
-    background: none;
-    color: darken($orange, 20%);
-
-    i { color: darken($orange, 20%); }
-  }
-}
-
-.links-of-author-item {
-  display: inline-block;
-  width: 48%;
   a {
-    box-sizing: border-box;
+    border: 0;
+    color: $orange;
     display: block;
-    margin-right: 0;
-    padding: 0 5px;
-    text-decoration: none;
+
     &:hover {
-      border-radius: 4px;
-      background: $gainsboro;
+      background: none;
+      border: 0;
+      color: darken($orange, 20%);
+
+      .fa, .fab, .far, .fas {
+        color: darken($orange, 20%);
+      }
     }
   }
-  .fa {
-    margin-right: 4px;
-    font-size: 16px;
-  }
-  .fa-globe { font-size: 15px; }
 }
 
-.post-toc ol { padding: 0 20px 10px; }
+.links-of-author {
+  flex-wrap();
+}
+
+.links-of-author-item {
+  sidebar-inline-links-item();
+
+  if (not hexo-config('social_icons.icons_only')) {
+    width: 50%;
+  }
+
+  a {
+    border-bottom: 0;
+    border-radius: 4px;
+    display: block;
+
+    &:hover {
+      background: var(--body-bg-color);
+    }
+  }
+}
+
+.links-of-blogroll-item {
+  if (hexo-config('links_settings.layout') == 'inline') {
+    display: inline-block;
+    max-width: 100%;
+    sidebar-inline-links-item();
+  }
+}
+
+if (hexo-config('back2top.sidebar')) {
+  // Only when back2top.sidebar is true, apply the following styles
+  .back-to-top {
+    background: var(--body-bg-color);
+    margin: 8px - $sidebar-offset -10px -18px;
+
+    &.back-to-top-on {
+      margin-top: 16px;
+    }
+  }
+}
