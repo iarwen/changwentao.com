@@ -101,6 +101,6 @@ theme: next
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repository: git@github.com:iarwen/changwentao.github.io.git
+  repo: git@github.com:iarwen/changwentao.github.io.git
   branch: gh-pages
 since: 2015
